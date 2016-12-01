@@ -1,14 +1,10 @@
-# change XX here to your group letter pair.
-PRG = group_13
+# Version: $Id: Makefile 977 2011-11-24 20:41:54Z ag0015 $
 
-# add to this line the names of other source code files that contain code for your project
-# but replace suffix .S with .o, eg display.S would become display.o as in
-# OBJ = $(PRG).o init.o display.o
+PRG = timing_solution
 OBJ = $(PRG).o init.o
 
-### NO NEED TO EDIT BEYOND THIS LINE!
-
 MCU_TARGET = atmega328p
+#MCU_TARGET = atmega329
 #OPTIMIZE = -Os
 OPTIMIZE = -O0
 
@@ -17,6 +13,10 @@ LIBS =
 
 CC = avr-gcc
 AS = avr-gcc
+
+# Override is only needed by avr-lib build system.
+#override CFLAGS = -g -Wall $(OPTIMIZE) -mmcu=$(MCU_TARGET) $(DEFS)
+#override LDFLAGS = = -g -Wall $(OPTIMIZE) -mmcu=$(MCU_TARGET) $(DEFS)
 
 CFLAGS = -g -Wall $(OPTIMIZE) -mmcu=$(MCU_TARGET) $(DEFS)
 LDFLAGS = -g -Wall $(OPTIMIZE) -mmcu=$(MCU_TARGET) -nostdlib $(DEFS)
@@ -39,7 +39,7 @@ all: hex ehex
 $(PRG).elf: $(OBJ)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^ $(LIBS)
 
-#dependency, eg:
+# dependency:
 #test.o: test.c iocompat.h
 
 clean:

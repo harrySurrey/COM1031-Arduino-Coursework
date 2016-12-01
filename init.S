@@ -1,8 +1,28 @@
-;;; init.S 
+;;; init.S
+
+;;;  This lab material and corresponding solutions are 
+;;;  released under the Creative Commons Share-Alike 
+;;;  Non-Commercial Licence at 
+;;;  http://creativecommons.org/licenses/by-nc-sa/3.0/
+;;;  (C) Andre Gruning, 2011. Developed for COM1031 in 2011.
+;;;  (C) Jonathan Clark. 2012. Adapted for COM1031 in 2012.
+;;;
+;;;	REFERENCES:
+;;;	[ATmega]: General 8-bit Atmel Microcontroller document 
+;;;  downloadable from
+;;;  www.atmel.com/dyn/resources/prod_documents/8271S.pdf
+;;;  [ATmega328p]: Specific ATmega328p document (quite large!)
+;;;  downloadable from
+;;;  www.atmel.com/Images/doc7810.pdf
+;;;  [AVR]: Instruction Set Manual
+;;;  downloadable from
+;;;  www.atmel.com/Images/doc0856.pdf
+;;;
+
 #define __SFR_OFFSET 0
 #include <avr/io.h> 				
 
-	;; this pseudo op ensures the following code will be placed right at the start of the program memory
+	;; this pseudo op ensures the following code will be placed right a the start of the program memory
 	.section .vectors
 
 	
@@ -29,7 +49,7 @@ timer1_ovr_v:
 	jmp timer1_ovr_isr 	; timer1 overrun interrupt starts from here.
 
 
-;;; we make the symbols that point to ISR as weak reference. This means
+;;; we make the symbols that point to isr weak reference. This means
 ;;; if you define them otherwise in your own code and export them as
 ;;; .global, their address will be taken, not the one in this file.
 	.weak timer1_compa_isr
