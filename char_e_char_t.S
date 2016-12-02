@@ -22,7 +22,7 @@ BUTTON = 0
 main:
 
 	;;PORT OUTPUT SETUP
-	ldi r16, _BV(SEG_7_OUT)
+	ldi r16, SEG_7_OUT
 	out DDRD, r16
 	
 	;;Set up port for button DDRB 0 is automatically an input
