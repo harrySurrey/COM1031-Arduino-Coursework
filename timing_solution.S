@@ -50,7 +50,10 @@
 
 
 #define __SFR_OFFSET 0
-#include <avr/io.h> 				
+#include <avr/io.h> 	
+#include "7segment.S"	
+#include "get_digit.S"		
+#include "delay.S"
 
 ;;; Button is connected to PIN 8, PORTB, Bit 0, because that doubles as the ICP1 for timer 1
 	BUTTON = 0
@@ -71,12 +74,14 @@
 main:	
 	;; output setup
 
-	;; make these pins output:
-	ldi r16, _BV(RED) | _BV(YELLOW) | _BV(GREEN)
-	out DDRB, r16           ;
+	ldi r24, ALL_SEGS	; !!!
+	out DDRD, r24 		; make pins of PORTD output (except pin 0)
+
+	clr r24			; set counter to zero.
+
 	
 	;; setup for button, DDRB0 is automatically an input.
-	sbi PORTB, BUTTON 	; switch on the pull-up. Released
+	sbi PORTD, BUTTON 	; switch on the pull-up. Released
 				; button is 1, depressed button read as 0.
 
 	;; setup the timer ([ATmega328p], Section 15.11.1, p126)
@@ -216,6 +221,20 @@ timer1_cpt_isr:
 
 	
 pressed:
+
+	rcall get_digit		; convert counter to digit representation
+	out PORTD, r24		; display digit
+
+	ldi r24,1		
+	rcall delay		; delay for 1s
+
+	pop r24			; restore counter value
+
+	inc r24			; advance counter
+
+
+
+
 	;; call depressed ; more code to exexcute, perhaps for the coursework?
 	ori r17, _BV(ICES1)	; next time detect positive edge, ie a
 				; button release.
