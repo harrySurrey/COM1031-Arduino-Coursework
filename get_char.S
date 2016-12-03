@@ -19,7 +19,7 @@
 ;;;
 
 ;;; import all symbol definitions for the seven segment display.
-#include "7segment.S"
+#include "characterDefinitions.S"
 
 
 ;;; This subroutine converts a number from 0x0 to 0x7 to its digit
