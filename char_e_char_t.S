@@ -8,7 +8,7 @@ TIMEOUT = 2 * TICKS_PER_SEC / 5 ;;400ms
 
 #define__SFR_OFFEST 0
 #include <avr/io.h>
-#include "characterDefinitions.S"
+#include "char_definition.S"
 
 ;;Button connected to pin 8 port B pin 0
 BUTTON = 0
