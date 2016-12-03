@@ -1,6 +1,6 @@
 # Version: $Id: Makefile 977 2011-11-24 20:41:54Z ag0015 $
 
-PRG = timing_solution
+PRG = char_e_char_t.S
 OBJ = $(PRG).o init.o
 
 MCU_TARGET = atmega328p
