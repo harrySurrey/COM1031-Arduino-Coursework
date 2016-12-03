@@ -25,7 +25,7 @@
 #include <avr/io.h>
 
 ;;; include all symbol definitions for the seven segement display:
-#include "7segment.S"
+#include "char_definition.S"
 
 	.global main
 	
@@ -40,7 +40,7 @@ loop:	push r24		; save counter
 
 	//lsl r24		; left shift to get every second value.
 	//inc r24		; to get the even digits only
-	rcall get_digit		; convert counter to digit representation
+	rcall get_char		; convert counter to digit representation
 	out PORTD, r24		; display digit
 
 	ldi r24,1		
@@ -49,5 +49,4 @@ loop:	push r24		; save counter
 	pop r24			; restore counter value
 
 	inc r24			; advance counter
-	// dec r24		; alterantively decrement counter 
 	rjmp loop
