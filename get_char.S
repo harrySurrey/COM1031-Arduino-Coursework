@@ -32,9 +32,9 @@
 ;;; r24: 7-segment representation of the digit
 ;;;
 
-	.global get_digit
+	.global get_char
 
-get_digit:
+get_char:
 
 	push r30		; save Z reg low
 	push r31		; save Z reg hi
@@ -62,7 +62,7 @@ get_digit:
 ;;; from 0x0 to 0xF in program memory (that is alright as it does not
 ;;; need change):
 
-digit_table:
+char_table:
 	.byte CHAR_e, CHAR_E, CHAR_T, CHAR_I, CHAR_N, CHAR_A, CHAR_M, CHAR_S, CHAR_D, CHAR_R, CHAR_G, CHAR_U, CHAR_K, CHAR_W, CHAR_O, CHAR_H, CHAR_B, CHAR_L, CHAR_Z, CHAR_F, CHAR_C, CHAR_P, CHAR_e, CHAR_V, CHAR_X, CHAR_e, CHAR_Q, CHAR_e, CHAR_Y, CHAR_J, CHAR_e, CHAR_5, CHAR_6, CHAR_e, CHAR_7, CHAR_e, CHAR_e, CHAR_e, CHAR_8, CHAR_e, CHAR_e, CHAR_e, CHAR_e, CHAR_e, CHAR_e, CHAR_e, CHAR_9, CHAR_4, CHAR_e, CHAR_e, CHAR_e, CHAR_e, CHAR_e, CHAR_e, CHAR_e, CHAR_3, CHAR_e, CHAR_e, CHAR_e, CHAR_2, CHAR_e, CHAR_1, CHAR_0 
 
 
