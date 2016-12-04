@@ -32,7 +32,7 @@
 	
 	;; The characters are inverted with the ~ symbol because the seven segment display follows inverse
 	;; logic, so a 0 bit would turn that segment ON.
-
+	
 	CHAR_e = ~(_BV(SEG_A) | _BV(SEG_D))
 	CHAR_0 = ~(_BV(SEG_A) | _BV(SEG_B) | _BV(SEG_C) | _BV(SEG_D) | _BV(SEG_E) | _BV(SEG_F))
 	CHAR_1 = ~(_BV(SEG_B) | _BV(SEG_C))
