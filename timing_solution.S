@@ -37,8 +37,8 @@
 	CPU_FREQ = 16000000
 	TICKS_PER_SEC = CPU_FREQ / (256 * 1024)
 
-	DECISION_LIMIT = TICKS_PER_SEC / 5 ; 200ms
-	TIMEOUT = 2 * TICKS_PER_SEC / 5	   ; 400ms
+	DECISION_LIMIT =2*  TICKS_PER_SEC / 5; 200ms
+	TIMEOUT =4* TICKS_PER_SEC / 5   ; 400ms
 	
 ;;; Timer1 capture interrupt is used to record the length of button
 ;;; presses and button releases. 
@@ -50,20 +50,12 @@
 
 
 #define __SFR_OFFSET 0
-#include <avr/io.h> 	
-#include "7segment.S"	
-#include "get_digit.S"		
-#include "delay.S"
-
+#include <avr/io.h>
+#include "7segment.S"
+#include "get_digit.S"	
+	
 ;;; Button is connected to PIN 8, PORTB, Bit 0, because that doubles as the ICP1 for timer 1
 	BUTTON = 0
-;;; Red, yellow, green LEDs are connected to those bits of PORTB:
-	RED = 5
-	YELLOW = 4
-	GREEN = 3
-
-	.section .text
-
 
 ;;; this is the entry point to the user code, called from init.S. We
 ;;; do the setup of ports, timer and interrupts, then we go to an
@@ -81,7 +73,7 @@ main:
 
 	
 	;; setup for button, DDRB0 is automatically an input.
-	sbi PORTD, BUTTON 	; switch on the pull-up. Released
+	sbi PORTB, BUTTON 	; switch on the pull-up. Released
 				; button is 1, depressed button read as 0.
 
 	;; setup the timer ([ATmega328p], Section 15.11.1, p126)
@@ -133,9 +125,6 @@ timer1_compa_isr:
 	in r16, SREG		; save the status register.
 	push r16
 
-//	ldi r16, _BV(GREEN) | _BV(YELLOW)
-//	out PORTB, r16
-
 	;; check whether we are waiting for a button press or release:
 	lds r16, TCCR1B
 	sbrs r16, ICES1 	; skip if waiting for postive edge (ie for button release)
@@ -154,7 +143,7 @@ awaiting_press:
 	;; TIME-OUT has elasped since the last release -- in this case
 	;; we switch on the yellow led and the other off.
 		
-	ldi r16, _BV(YELLOW)  | _BV(BUTTON) 	; YELLOW on, all other
+	ldi r16, _BV(BUTTON) 	; YELLOW on, all other
 				; off, pull-up for button stays on.
 	out PORTB, r16		
 	
@@ -190,9 +179,6 @@ timer1_cpt_isr:
 				; documentation [ATmega328p] Section 15.3 p106
 	push r17				
 
-
-	or r17, r8
-
 	mov r17,r19		;  debounce. If there is no timer overflow and
 	or r17,r8		;  ICR1H is still zero, then 
 				;  less than 16ms have elapsed since
@@ -221,19 +207,6 @@ timer1_cpt_isr:
 
 	
 pressed:
-
-	rcall get_digit		; convert counter to digit representation
-	out PORTD, r24		; display digit
-
-	ldi r24,1		
-	rcall delay		; delay for 1s
-
-	pop r24			; restore counter value
-
-	inc r24			; advance counter
-
-
-
 
 	;; call depressed ; more code to exexcute, perhaps for the coursework?
 	ori r17, _BV(ICES1)	; next time detect positive edge, ie a
@@ -272,13 +245,17 @@ released:
 	brcs short_press		; if it is shorter jump to label short
 	
 long_press:
-	ldi r16, _BV(RED) | _BV(BUTTON)
-	rjmp 1f
+	ldi r16, 2
+	jmp 1f
 
 short_press:
 
-	ldi r16, _BV(GREEN) | _BV(BUTTON)			; 0 for dot
-1:	out PORTB, r16		; switch on new LED.
+	ldi r16, 1; 0 for dot
+	jmp 1f
+	
+1:
+	rcall get_digit
+	out PORTD, r16 	; switch on new LED.
 	
 	pop r16
 	clr r19			; clear overflow flag in case it was set
