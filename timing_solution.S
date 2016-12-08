@@ -246,11 +246,13 @@ released:
 	
 long_press:
 	ldi r16, 2
+	
 	jmp 1f
 
 short_press:
 
-	ldi r16, 1; 0 for dot
+	ldi r16, 1
+	
 	jmp 1f
 	
 1:
